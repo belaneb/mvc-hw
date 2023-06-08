@@ -20,13 +20,28 @@ const app = express();
 dotenv.config()
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
-const sequelize = new Sequelize(
-    process.env.DBNAME, process.env.DBUSER, process.env.DBPASS,
-    {
-        host: process.env.DBHOST,
-        dialect: 'mysql'
-    }
-);
+// const sequelize = new Sequelize(
+//     process.env.DBNAME, process.env.DBUSER, process.env.DBPASS,
+//     {
+//         host: process.env.DBHOST,
+//         dialect: 'mysql'
+//     }
+// );
+let sequelize;
+if (process.env.JAWSDB_URL) {
+    sequelize = new Sequelize(process.env.JAWSDB_URL);
+  } else {
+    sequelize = new Sequelize(
+      process.env.DBNAME,
+      process.env.DBUSER,
+      process.env.DBPASS,
+      {
+        host: '127.0.0.1',
+        dialect: 'mysql',
+        port: 3306
+      }
+    );
+  }
 
 // Set up session middleware
 app.use(
